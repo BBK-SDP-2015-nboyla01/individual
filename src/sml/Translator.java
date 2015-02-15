@@ -1,10 +1,15 @@
 package sml;
 
+
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  * The translator of a <b>S</b><b>M</b>al<b>L</b> program.
@@ -80,14 +85,28 @@ public class Translator {
 
 		if (line.equals(""))
 			return null;
-
+                
+                Class instructClass = Instruction.class;
+                Instruction myInstruction = null;
+                
 		String ins = scan();
 		switch (ins) {
-		case "add":
+                case "add":
+                {   	r = scanInt();
+			s1 = scanInt();
+			s2 = scanInt();
+                    try {                        
+                        myInstruction  = (Instruction) instructClass.getConstructor(String.class, int.class,int.class,int.class).newInstance(ins,r,s1,s2);                        
+                    } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                        Logger.getLogger(Translator.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }                
+                    return myInstruction;
+/*		case "add":
 			r = scanInt();
 			s1 = scanInt();
 			s2 = scanInt();
-			return new AddInstruction(label, r, s1, s2);
+			return new AddInstruction(label, r, s1, s2); */
 		case "lin":
 			r = scanInt();
 			s1 = scanInt();

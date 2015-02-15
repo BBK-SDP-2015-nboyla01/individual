@@ -8,3 +8,4 @@ f6 out 21
 f7 add 1 21 22
 f8 div 0 19 1
 f9 out 0
+f10 ad2 0 0 0
